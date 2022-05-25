@@ -105,3 +105,36 @@ INSERT INTO "room_users" (user_id, room_id)
 VALUES (4, 2);
 
 select * from "room_users";
+
+-- insert sample data in "premission" table
+INSERT INTO "premission" (id, label, description)
+VALUES (1, 'show_profile', 'another users can see users or room profile ');
+
+INSERT INTO "premission" (id, label, description)
+VALUES (2, 'can_add_user', 'another users can add user to room');
+
+INSERT INTO "premission" (id, label, description)
+VALUES (3, 'can_add_to_room', 'another users can add one user to group (privacy in setting)');
+
+select * from "premission";
+
+-- insert sample data in "user_premission" table
+INSERT INTO "user_premission" (user_id, premission_id)
+VALUES (1, 1);
+
+INSERT INTO "user_premission" (user_id, premission_id)
+VALUES (2, 1);
+
+INSERT INTO "user_premission" (user_id, premission_id)
+VALUES (1, 3);
+
+select * from "user_premission";
+
+-- insert sample data in "room_premission" table
+INSERT INTO "room_premission" (room_id, premission_id)
+VALUES (1, 2);
+
+INSERT INTO "room_premission" (room_id, premission_id)
+VALUES (2, 2);
+
+select * from "room_premission";
