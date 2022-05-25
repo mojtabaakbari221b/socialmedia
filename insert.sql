@@ -56,6 +56,9 @@ VALUES (2, 1, 'group', 'poem', '2019-05-06');
 INSERT INTO "room" (id, creator, type, username, create_date)
 VALUES (3, 2, 'group', '212', '2020-05-06');
 
+INSERT INTO "room" (id, creator, type, username, create_date)
+VALUES (4, 1, 'channel', 'varzesh32', '2018-05-06');
+
 select * from "room";
 
 -- insert sample data in "message" table
@@ -108,13 +111,13 @@ select * from "room_users";
 
 -- insert sample data in "premission" table
 INSERT INTO "premission" (id, label, description)
-VALUES (1, 'show_profile', 'another users can see users or room profile ');
+VALUES (1, 'user__show_profile', 'another users can see users or room profile ');
 
 INSERT INTO "premission" (id, label, description)
-VALUES (2, 'can_add_user', 'another users can add user to room');
+VALUES (2, 'room__can_add_user', 'another users can add user to room');
 
 INSERT INTO "premission" (id, label, description)
-VALUES (3, 'can_add_to_room', 'another users can add one user to group (privacy in setting)');
+VALUES (3, 'user__can_add_to_room', 'another users can add one user to group (privacy in setting)');
 
 select * from "premission";
 

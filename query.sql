@@ -29,6 +29,30 @@ having( count(*) >= 2);
 select * from "user"
 where id in (select user_id from "room_users");
 
+-- تعداد روم هایی که هیچ عضوی ندارند
+select count(*) as number_of_unmembered_room from (
+	select id from "room"
+	except
+	select distinct(room_id) from "room_users"
+) as T;
+
+-- دیدن اینکه هر یوزر در یک بازه زمانی چند روم تشکیل داده است
+select "user".username, count("room".id) as number_of_rooms from "room" inner join "user"
+on "user".id="room".creator
+where create_date >= '2018-05-06' and create_date <= '2020-05-06'
+group by "user".username;
+
+-- مشخصات یوزری که تمامی اجازه دسترسی به افراد دیگر را داده است برای تعامل
+select * from "user" 
+where id in
+	(
+		select user_id as number_of_premission from "user_premission" 
+		group by user_id
+		having count(premission_id) = (
+			select count(*) from "premission" where label like 'user__%'
+		)
+	)
+
 -- درست کردن ایندکس روی روم
 CREATE INDEX idx_room_username 
 ON "room"(username);
