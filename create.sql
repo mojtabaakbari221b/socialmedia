@@ -50,3 +50,38 @@ CREATE TABLE public."message"
 	foreign key (parent_id) references "message" (id),
 	CONSTRAINT check_receiver check (room_receiver_id is not null or user_receiver_id is not null)
 );
+
+CREATE TABLE public."room_users" 
+(
+	user_id bigint NOT NULL,
+	room_id bigint NOT NULL,
+	foreign key (user_id) references "user" (id),
+	foreign key (room_id) references "room" (id),
+	PRIMARY KEY (user_id, room_id)
+);
+
+CREATE TABLE public."premission"
+(
+	id serial NOT NULL UNIQUE,
+	label character varying(56) not null,
+	description character varying(512) not null,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE public."user_premission"
+(
+	user_id bigint NOT NULL,
+	premission_id bigint NOT NULL,
+	foreign key (user_id) references "user" (id),
+	foreign key (premission_id) references "premission" (id),
+	PRIMARY KEY (user_id, premission_id)
+);
+
+CREATE TABLE public."room_premission"
+(
+	room_id bigint NOT NULL,
+	premission_id bigint NOT NULL,
+	foreign key (room_id) references "room" (id),
+	foreign key (premission_id) references "premission" (id),
+	PRIMARY KEY (room_id, premission_id)
+);
