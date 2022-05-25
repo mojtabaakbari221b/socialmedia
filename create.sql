@@ -36,11 +36,11 @@ CREATE TABLE public."room"
 
 CREATE TABLE public."message" 
 (
-	parent_id bigint UNIQUE,
+	parent_id bigint,
 	id serial NOT NULL,
 	sender_id bigint not null,
-	room_receiver_id bigint not null,
-	user_receiver_id bigint not null,
+	room_receiver_id bigint,
+	user_receiver_id bigint,
 	text character varying(1024) not null,
 	sended_time date,
 	PRIMARY KEY (id),
@@ -48,7 +48,8 @@ CREATE TABLE public."message"
 	foreign key (user_receiver_id) references "user" (id),
 	foreign key (room_receiver_id) references "room" (id),
 	foreign key (parent_id) references "message" (id),
-	CONSTRAINT check_receiver check (room_receiver_id is not null or user_receiver_id is not null)
+	CONSTRAINT check_both_of_receiver_cant_be_null check (room_receiver_id is not null or user_receiver_id is not null),
+	CONSTRAINT check_receiver check (room_receiver_id is null or user_receiver_id is null)
 );
 
 CREATE TABLE public."room_users" 

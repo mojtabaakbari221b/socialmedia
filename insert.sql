@@ -57,3 +57,51 @@ INSERT INTO "room" (id, creator, type, username, create_date)
 VALUES (3, 2, 'group', '212', '2020-05-06');
 
 select * from "room";
+
+-- insert sample data in "message" table
+INSERT INTO "message" (id, sender_id, room_receiver_id, text)
+VALUES (1, 1, 1, 'Hello World !');
+
+INSERT INTO "message" (id, parent_id, sender_id, room_receiver_id, text)
+VALUES (2, 1, 1, 1, 'another Hello World to previous World !');
+
+INSERT INTO "message" (id, sender_id, room_receiver_id, text)
+VALUES (3, 2, 1, 'Stop it. Hello World? how many time yo wanna say ?!');
+
+INSERT INTO "message" (id, sender_id, room_receiver_id, text)
+VALUES (4, 3, 1, 'Stop it. both of you. ');
+
+INSERT INTO "message" (id, sender_id, user_receiver_id, text)
+VALUES (5, 3, 1, 'Stop it. both of you. i said this in your private room.');
+
+INSERT INTO "message" (id, sender_id, room_receiver_id, text)
+VALUES (6, 3, 2, 'Stop it. both of you. i said this in your private room.');
+
+select * from "message";
+
+-- insert sample data in "room_users" table
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (1, 1);
+
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (2, 1);
+
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (3, 1);
+
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (4, 1);
+
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (1, 2);
+
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (2, 2);
+
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (3, 2);
+
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (4, 2);
+
+select * from "room_users";
