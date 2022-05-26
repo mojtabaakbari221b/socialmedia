@@ -1,3 +1,11 @@
+--  دیدن اینکه هر روم بطور میانگین چند یوزر دارد
+select cast(avg(count) as int) avg_users_in_room from 
+(
+	select room_id, count(user_id) from "room_users" left outer join "room"
+	on "room_users".room_id = "room".id
+	group by room_id
+) as T
+
 -- دیدن تعداد پیام های ارسال شده در یک روم با آیدی خاص
 select count(id) from "message" where room_receiver_id = 1;
 
