@@ -6,6 +6,7 @@ select cast(avg(count) as int) avg_users_in_room from
 	group by room_id
 ) as T
 
+
 -- روم های با تایپ خاص (کانال) مشترک بین یوزر و مخاطبانش
 select id, username from "room" right outer join "room_users"
 on "room_users".room_id = "room".id where type='channel' and user_id = 1
@@ -65,6 +66,13 @@ select T.from_id, T2.to_id from "contacts" as T inner join "contacts" as T2
 ON T.to_id=T2.from_id where T.from_id=1
 except
 select * from "contacts" where from_id = 1;
+
+-- مجموع پیام های موجود در همه روم ها
+select sum(count) from (
+	select count(id) from "message"
+	where room_receiver_id is not null
+	group by room_receiver_id
+) as T
 
 -- مجموع پیام هایی که یک کاربر خاص در دو روم خاص ارسال کرده است
 select count(*) from
