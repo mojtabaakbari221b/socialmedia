@@ -156,10 +156,10 @@ WHERE phone_number = '09111234567';
 -- دستورات حذف و بروزرسانی
 
 -- پاک سازی یوزر با آیدی خاص
-DELETE FROM "user" WHERE id=11;
+DELETE FROM "user" WHERE id=7;
 
 -- پاک سازی روم با آیدی خاص
-DELETE FROM "room_users" WHERE id=1 or id=2;
+DELETE FROM "room_users" WHERE room_id=1 or user_id=2;
 
 -- پاک سازی کل افراد موجود در یک روم
 DELETE FROM "room_users";
@@ -171,5 +171,5 @@ where id=1;
 
 -- بروزرسانی اطلاعات یک روم خاص
 UPDATE "room"
-set name='fz', username='fz'
+set type='group', username='fz'
 where id=1;
