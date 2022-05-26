@@ -29,6 +29,13 @@ where create_date = (
 	select min(create_date) from "room"
 )
 
+-- لیست کسانیکه در یک روم خاص عضو هستند
+select * from "user"
+where exists (
+	select user_id from "room_users"
+	where room_id = 1 and room_id = "user".id
+)
+
 -- دیدن تعداد پیام های ارسال شده در یک روم با آیدی خاص
 select count(id) from "message" where room_receiver_id = 1;
 
