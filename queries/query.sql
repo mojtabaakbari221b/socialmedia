@@ -23,6 +23,20 @@ from (
 	group by user_id
 ) as T
 
+-- مشخصات روم که تعداد پیام هایش از همه روم هایی که بعد از سال ۲۰۱۹ ثبت نام کرده است
+select id , username, type from "room" inner join (
+	select room_receiver_id from "message"
+	where room_receiver_id is not null
+	group by room_receiver_id
+	having count(id) > ALL (
+		select count("message".id) from "message" inner join "room"
+		on "room".id = "message".room_receiver_id
+		where create_date > '2019-01-01'
+		group by room_receiver_id
+	)
+) as T
+on T.room_receiver_id = "room".id
+
 -- اطلاعات روم که زودتر از همه در سایت ثبت نام کرده است
 select * from "room"
 where create_date = (
