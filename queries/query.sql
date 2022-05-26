@@ -16,6 +16,19 @@ and user_id in (
 	select to_id as intersectes from "contacts" where from_id = 1
 )
 
+-- بیشترین تعداد روم که یوزر ها عضو هستند
+select max(count)
+from (
+	select user_id, count(room_id) from "room_users"
+	group by user_id
+) as T
+
+-- اطلاعات روم که زودتر از همه در سایت ثبت نام کرده است
+select * from "room"
+where create_date = (
+	select min(create_date) from "room"
+)
+
 -- دیدن تعداد پیام های ارسال شده در یک روم با آیدی خاص
 select count(id) from "message" where room_receiver_id = 1;
 
@@ -31,6 +44,18 @@ select T.from_id, T2.to_id from "contacts" as T inner join "contacts" as T2
 ON T.to_id=T2.from_id where T.from_id=1
 except
 select * from "contacts" where from_id = 1;
+
+-- مجموع پیام هایی که یک کاربر خاص در دو روم خاص ارسال کرده است
+select count(*) from
+(
+	select * from "message" inner join "room"
+	on "message".room_receiver_id = "room".id
+	where room_receiver_id=1 and sender_id = 3
+	union
+	select * from "message" inner join "room"
+	on "message".room_receiver_id = "room".id
+	where room_receiver_id=2 and sender_id = 3
+) as T
 
 -- ترتیب نزولی کسانیکه بیشترین پیام را در یک روم داده اند
 select sender_id , count(id) as number_of_messages from "message"
