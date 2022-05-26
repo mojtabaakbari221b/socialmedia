@@ -117,6 +117,21 @@ where id in
 		)
 	)
 
+-- لیست روم هایی که تعداد پیام هایشان حداقل از یکی از روم هایی که اسمشان با یک عبارت خاص شروع میشود بیشتر است
+select id , username, type from "room" inner join (
+	select room_receiver_id from "message"
+	where room_receiver_id is not null
+	group by room_receiver_id
+	having count(id) > ANY (
+		select count("message".id) from "message" inner join "room"
+		on "room".id = "message".room_receiver_id
+		where username like 'poem%'
+		group by room_receiver_id
+	)
+) as T
+on T.room_receiver_id = "room".id
+
+
 -- درست کردن ایندکس روی روم
 CREATE INDEX idx_room_username 
 ON "room"(username);
