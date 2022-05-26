@@ -107,6 +107,9 @@ VALUES (3, 2);
 INSERT INTO "room_users" (user_id, room_id)
 VALUES (4, 2);
 
+insert into "room_users" (user_id, room_id)
+values (2,  4)
+
 select * from "room_users";
 
 -- insert sample data in "premission" table

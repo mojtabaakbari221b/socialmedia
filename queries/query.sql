@@ -6,6 +6,16 @@ select cast(avg(count) as int) avg_users_in_room from
 	group by room_id
 ) as T
 
+-- روم های با تایپ خاص (کانال) مشترک بین یوزر و مخاطبانش
+select id, username from "room" right outer join "room_users"
+on "room_users".room_id = "room".id where type='channel' and user_id = 1
+intersect
+select id,username from "room" right outer join "room_users"
+on "room_users".room_id = "room".id where type='channel'
+and user_id in (
+	select to_id as intersectes from "contacts" where from_id = 1
+)
+
 -- دیدن تعداد پیام های ارسال شده در یک روم با آیدی خاص
 select count(id) from "message" where room_receiver_id = 1;
 
