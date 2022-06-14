@@ -36,4 +36,24 @@ INSERT INTO "user" (name, username, phone_number)
 VALUES ('mojtaba', 'mojtaba', '09111234561');
 select * from "user";
 
+-- اضافه کردن خودکار یوزر به لیست یوزر های یک اتاق با تریگر
+CREATE OR REPLACE FUNCTION add_user_to_list_of_room_member_when_room_is_create() 
+RETURNS trigger AS $$ 
+BEGIN  
+	INSERT INTO "room_users" (user_id, room_id)
+	VALUES (NEW.creator, NEW.id);
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_add_user_to_list_of_room_member_when_room_is_create
+AFTER INSERT
+ON "room"
+FOR EACH ROW 
+EXECUTE PROCEDURE add_user_to_list_of_room_member_when_room_is_create(); 
+
+select * from "room_users";
+INSERT INTO "room" (creator, type, username, create_date)
+VALUES (1, 'channel', 'varzesh', '2018-05-06');
+
 
