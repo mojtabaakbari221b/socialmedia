@@ -42,3 +42,27 @@ where label = 'user__blocked';
 call deblock_user_if_randomnumber_less_than_half();
 
 
+-- گرفتن مجموع اعضای روم ها با استفاده از اشاره گر
+ CREATE OR REPLACE FUNCTION sum_of_room_members() 
+    RETURNS int AS $$ 
+	DECLARE sum INT;
+	DECLARE counter INT;
+	DECLARE user_counter_in_room_cursor CURSOR FOR (
+		select count(room_id) as user_counter_in_room from "room" inner join "room_users"
+		on "room".id = "room_users".room_id
+		group by room_id
+	);
+BEGIN
+	OPEN user_counter_in_room_cursor;
+	sum := 0;
+	LOOP
+		FETCH user_counter_in_room_cursor INTO counter;
+ 		IF NOT FOUND THEN EXIT; END IF;
+ 	    sum := sum + counter;
+	END LOOP;
+	CLOSE user_counter_in_room_cursor;
+	RETURN sum;
+ END;
+$$ LANGUAGE plpgsql;
+
+select sum_of_room_members();
