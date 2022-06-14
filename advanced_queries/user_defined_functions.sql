@@ -16,4 +16,18 @@ LANGUAGE plpgsql;
 
 SELECT is_user_have_specific_premission(1, 'user__show_profile');
 
+-- برگرداندن اولین رومی که یک یوزر ساخته است با رکورد
+CREATE OR REPLACE FUNCTION return_first_room_that_user_created(usr_id integer) RETURNS record AS 
+$$
+DECLARE
+	t record;
+BEGIN
+		SELECT * INTO t FROM "room"
+			where creator = usr_id
+			order by (create_date,  id);
+		RETURN t;
+END;
+$$ LANGUAGE plpgsql;
 
+select return_first_room_that_user_created(1);
+select return_first_room_that_user_created(4);
