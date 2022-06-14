@@ -31,3 +31,18 @@ $$ LANGUAGE plpgsql;
 
 select return_first_room_that_user_created(1);
 select return_first_room_that_user_created(4);
+
+-- بازگرداندن روم هایی که یک یوزر تشکیل داده است به شکل جدول
+CREATE OR REPLACE FUNCTION return_room_that_user_created_as_table(usr_id integer)
+RETURNS TABLE (id integer, username character varying, type character varying)
+AS $$
+BEGIN
+		RETURN QUERY SELECT "room".id , "room".username, "room".type FROM "room"
+			where creator = usr_id
+			order by (create_date,  "room".id);
+END;
+$$ LANGUAGE plpgsql;
+
+select * from return_room_that_user_created_as_table(1);
+select * from return_room_that_user_created_as_table(4);
+
