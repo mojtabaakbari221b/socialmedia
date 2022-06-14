@@ -57,3 +57,45 @@ INSERT INTO "room" (creator, type, username, create_date)
 VALUES (1, 'channel', 'varzesh', '2018-05-06');
 
 
+CREATE OR REPLACE FUNCTION delete_user_message_in_group_when_lefted() 
+RETURNS TRIGGER AS $$
+BEGIN
+	delete from "message" where sender_id = OLD.user_id and room_receiver_id = OLD.room_id;
+	RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER  trigger_delete_user_message_in_group_when_lefted
+AFTER DELETE ON "room_users"
+FOR EACH ROW
+EXECUTE PROCEDURE delete_user_message_in_group_when_lefted();
+
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (28, 1);
+INSERT INTO "message" (sender_id, room_receiver_id, text)
+VALUES (28, 1, 'Hey.');
+delete from "room_users" where room_id = 1 and user_id = 28;
+select * from "message" where sender_id = 28;
+select * from "room_users";
+
+-- پاک کردن پیام هایی که یک کاربر حذف شده در یک روم ارسال کرده است
+CREATE OR REPLACE FUNCTION delete_user_message_in_group_when_lefted() 
+RETURNS TRIGGER AS $$
+BEGIN
+	delete from "message" where sender_id = OLD.user_id and room_receiver_id = OLD.room_id;
+	RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER  trigger_delete_user_message_in_group_when_lefted
+AFTER DELETE ON "room_users"
+FOR EACH ROW
+EXECUTE PROCEDURE delete_user_message_in_group_when_lefted();
+
+INSERT INTO "room_users" (user_id, room_id)
+VALUES (28, 1);
+INSERT INTO "message" (sender_id, room_receiver_id, text)
+VALUES (28, 1, 'Hey.');
+delete from "room_users" where room_id = 1 and user_id = 28;
+select * from "message" where sender_id = 28;
+select * from "room_users";
