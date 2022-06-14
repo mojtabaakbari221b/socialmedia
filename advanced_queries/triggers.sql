@@ -40,8 +40,10 @@ select * from "user";
 CREATE OR REPLACE FUNCTION add_user_to_list_of_room_member_when_room_is_create() 
 RETURNS trigger AS $$ 
 BEGIN  
-	INSERT INTO "room_users" (user_id, room_id)
-	VALUES (NEW.creator, NEW.id);
+	IF NEW is not null THEN
+		INSERT INTO "room_users" (user_id, room_id)
+		VALUES (NEW.creator, NEW.id);
+	END IF;
 	RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
