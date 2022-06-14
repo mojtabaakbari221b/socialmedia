@@ -99,3 +99,24 @@ VALUES (28, 1, 'Hey.');
 delete from "room_users" where room_id = 1 and user_id = 28;
 select * from "message" where sender_id = 28;
 select * from "room_users";
+
+-- بروز کردن ویوی پیامهای بدون ریپلای وقتی که یک پیام حذف میشود
+CREATE OR REPLACE FUNCTION refresh_message_without_reply_in_group_materilized_view() 
+RETURNS TRIGGER AS $$
+BEGIN
+	REFRESH MATERIALIZED VIEW message_without_reply_in_group_materilized_view;
+	RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER  trigger_refresh_message_without_reply_in_group_materilized_view
+AFTER DELETE ON "message"
+FOR EACH ROW
+EXECUTE PROCEDURE refresh_message_without_reply_in_group_materilized_view();
+
+SELECT * FROM message_without_reply_in_group_materilized_view;
+INSERT INTO "message" (sender_id, room_receiver_id, text)
+VALUES (3, 1, 'Hey Bro.');
+delete from "message" where id = 10;
+select * from "message";
+
